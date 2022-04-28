@@ -45,12 +45,19 @@ const team = [
 ];
 
 teamContainer = document.querySelector('.team-container');
+document.querySelector('#addMemberButton').addEventListener('click', addMemberFromInput);
 
 for (let i = 0; i < team.length; i++) {
+    // piccolo trucco che mi permette di mantenere la fn addPersonToTeamGrid generica e capace di aggiunge URL da internet
+    team[i]['image'] = 'img/'+team[i]['image'];
+    addPersonToTeamGrid(team[i]);    
+}
+
+function addPersonToTeamGrid(person) {
     //preleviamo i dati dell'oggetto dell'array che stiamo vedendo a questo giro
-    let thisName = team[i]['name'];
-    let thisRole = team[i]['role'];
-    let thisImg = team[i]['image'];
+    let thisName = person['name'];
+    let thisRole = person['role'];
+    let thisImg = person['image'];
     //creiamo un div vuoto con classe team-card
     let thisCard = document.createElement('div');
     thisCard.classList.add('team-card');
@@ -65,7 +72,7 @@ for (let i = 0; i < team.length; i++) {
 
     //creaimo e popoliamo l'img che andrà dentro card-img
     let thisCardImg = document.createElement('img');
-    thisCardImg.src = 'img/' + thisImg;
+    thisCardImg.src = thisImg;
     thisCardImg.alt = thisName;
     // mettiamo l'img dentro card-image
     thisCardImgDiv.append(thisCardImg);
@@ -78,8 +85,26 @@ for (let i = 0; i < team.length; i++) {
     thisCardTextCaption.textContent = thisRole;
     //popoliamo thisCardText
     thisCardText.append(thisCardTextTitle,thisCardTextCaption);
-    
-    
     teamContainer.append(thisCard);
 }
 
+//prende 3 valori di qualsiasi tipo e ci costruisce un oggetto con key name, role, image
+function buildPersonObject(name,role,image) {
+    let newPerson = {};
+    newPerson.name = name;
+    newPerson.role = role;
+    newPerson.image = image;
+    return newPerson;
+}
+
+//prende i valori dei 3 input nella pagina e li usa per aggiungere una card
+function addMemberFromInput() {
+    let memberName = document.getElementById('name');
+    let memberRole = document.getElementById('role');
+    let memberImg = document.getElementById('image');
+
+    addPersonToTeamGrid(buildPersonObject(memberName.value,memberRole.value,memberImg.value));
+    memberName.value = '';
+    memberRole.value = '';
+    memberImg.value = '';
+}
