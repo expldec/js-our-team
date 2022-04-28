@@ -42,11 +42,15 @@ const team = [
       role: 'Graphic Designer',
       image: 'barbara-ramos-graphic-designer.jpg',
     },
-  ];
+];
+
+teamContainer = document.querySelector('.team-container');
 
 for (let i = 0; i < team.length; i++) {
     for (key in team[i]) {
-        console.log(team[i][key]);
+        appendable = document.createElement('p');
+        appendable.textContent = team[i][key];
+        teamContainer.append(appendable);
     }
-    
 }
+
